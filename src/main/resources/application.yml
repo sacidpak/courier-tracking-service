@@ -1,0 +1,41 @@
+spring:
+  application:
+    name: courier-tracking-service
+  datasource:
+    url: jdbc:postgresql://localhost:5433/courier-tracking
+    username: postgres
+    password: password
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+  sql:
+    init:
+      mode: always
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+
+application:
+  audit:
+    user: courier-tracking-admin
+
+thread-executor:
+  default:
+    core-pool-size: 5
+    name: taskExecutor-
+    max-pool-size: 5
+    queue-capacity: 100
+
+
+distance:
+  strategy: OFFLINE
+
+store:
+  distance:
+    radius: 100
