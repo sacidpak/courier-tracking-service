@@ -10,6 +10,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.context.ApplicationEventPublisher;
 
 import java.math.BigDecimal;
 import java.util.Optional;
@@ -31,7 +32,7 @@ public class CourierServiceTest {
     private CourierLocationService courierLocationService;
 
     @Mock
-    private CourierStoreEntranceService courierStoreEntranceService;
+    private ApplicationEventPublisher applicationEventPublisher;
 
     @Mock
     private CourierDistanceService courierDistanceService;
@@ -52,7 +53,7 @@ public class CourierServiceTest {
 
         verify(courierDistanceService, times(1)).updateTotalDistance(courier, locationRequest);
         verify(courierLocationService, times(1)).save(courier, locationRequest);
-        verify(courierStoreEntranceService, times(1)).storeEntranceProcess(courier, locationRequest);
+        verify(applicationEventPublisher, times(1)).publishEvent(locationRequest);
     }
 
     @Test

@@ -8,6 +8,7 @@ import com.sacidpak.courier.tracking.exception.NotFoundException;
 import com.sacidpak.courier.tracking.util.MessageUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,9 +21,9 @@ public class CourierService {
 
     private final CourierLocationService courierLocationService;
 
-    private final CourierStoreEntranceService courierStoreEntranceService;
-
     private final CourierDistanceService courierDistanceService;
+
+    private final ApplicationEventPublisher applicationEventPublisher;
 
     @Transactional
     public void processLocation(CourierLocationRequest locationRequest) {
@@ -31,7 +32,7 @@ public class CourierService {
 
         courierDistanceService.updateTotalDistance(courier, locationRequest);
         courierLocationService.save(courier, locationRequest);
-        courierStoreEntranceService.storeEntranceProcess(courier, locationRequest);
+        applicationEventPublisher.publishEvent(locationRequest);
     }
 
     public CourierTotalDistanceResponse getTotalTravelDistance(Long courierId) {
